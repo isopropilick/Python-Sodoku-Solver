@@ -1,38 +1,45 @@
-import os
+import os, random, math, time, csv, fileinput
 from os import listdir
 from os.path import isfile, join
-import csv
 
-
+# Set CSV file paths
 unsolved = [f for f in listdir(os.getcwd()+"\\Puzzles\\unsolved\\") if isfile(join(os.getcwd()+"\\Puzzles\\unsolved\\", f))]
-unsolved=sorted(unsolved)
+solved = [f for f in listdir(os.getcwd()+"\\Puzzles\\solved\\") if isfile(join(os.getcwd()+"\\Puzzles\\solved\\", f))]
 
 
+# Function to print the data array on the console
 def console_print(puzz):
-    n=0
-    print('┎───────────┒')
+    print('┎─────────────────┒')
     for i in puzz:
-        if n%3==0 and n!=0:
-            print('┠───────────┨')
-        print('┃'+str(''.join(i[1:4])),end='┃')
-        print(str(''.join(i[4:7])),end='┃')
-        print(str(''.join(i[7:10])),end='┃\n')
-        n+=1
-    n=0
-    print('┖───────────┚')
+        if puzz.index(i)==3 or puzz.index(i)==6:
+            print('┠─────────────────┨')
+        print('┃ '+str(''.join(i[1:4]))+' ┃ '+str(''.join(i[4:7]))+' ┃ '+str(''.join(i[7:10])),end=' ┃\n')
+    print('┖─────────────────┚')
 
 
-for file in unsolved:
+# Initial Column Row test (Validate if a given cell can be solved using the information in the column and row)
+def row_column_validation(data,pos0,pos1,pos2):
+    print(data[pos0][pos1:pos2])
+
+
+
+def main():
     curr_puzz = []
-    print("----------"+str(unsolved.index(file)+1)+" ("+file+")----------")
-    with open(os.getcwd()+"\\Puzzles\\unsolved\\"+file) as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            curr_puzz.append(row)
-        curr_puzz.pop(0)
-    console_print(curr_puzz)
+    for file in unsolved:
+        # Covert the CSV file to a data array
+        with open(os.getcwd() + "\\Puzzles\\unsolved\\" + file) as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                curr_puzz.append(row)
+            # Pop header row
+            curr_puzz.pop(0)
+        print("----- "+file+" -----")
+        row_column_validation(curr_puzz,0,1,9)
+        console_print(curr_puzz)
+        curr_puzz = []
 
 
 
-
+if __name__ == "__main__":
+    main()
 
