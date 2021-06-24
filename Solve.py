@@ -9,17 +9,25 @@ solved = [f for f in listdir(os.getcwd()+"\\Puzzles\\solved\\") if isfile(join(o
 
 # Function to print the data array on the console
 def console_print(puzz):
-    print('┎─────────────────┒')
+    print('┎─────────────────────────────┒')
     for i in puzz:
         if puzz.index(i)==3 or puzz.index(i)==6:
-            print('┠─────────────────┨')
-        print('┃ '+str(''.join(i[1:4]))+' ┃ '+str(''.join(i[4:7]))+' ┃ '+str(''.join(i[7:10])),end=' ┃\n')
-    print('┖─────────────────┚')
+            print('┠─────────────────────────────┨')
+        print('┃   '+str(''.join(i[1:4]))+'   ┃   '+str(''.join(i[4:7]))+'   ┃   '+str(''.join(i[7:10])),end='   ┃\n')
+    print('┖─────────────────────────────┚')
 
 
 # Initial Column Row test (Validate if a given cell can be solved using the information in the column and row)
-def row_column_validation(data,pos0,pos1,pos2):
-    print(data[pos0][pos1:pos2])
+def clumn_validation(data,column):
+    actual=[]
+    missing=[]
+    for i in range(9):
+        actual.append(int(data[i][column+1][0]))
+    for x in range (9):
+        if (x+1) not in actual:
+            missing.append(x+1)
+    return missing
+
 
 
 
@@ -34,7 +42,7 @@ def main():
             # Pop header row
             curr_puzz.pop(0)
         print("----- "+file+" -----")
-        row_column_validation(curr_puzz,0,1,9)
+        print(clumn_validation(curr_puzz,1))
         console_print(curr_puzz)
         curr_puzz = []
 
